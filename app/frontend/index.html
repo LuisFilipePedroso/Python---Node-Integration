@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Python Node Integration</title>
+</head>
+<body>
+    <input type="text" name="message" id="message">
+    <button id="btnSend">Send</button>
+    <ul id="list">
+    </ul>
+</body>
+<script>
+    $(document).ready(function() {
+        const socket = io('http://127.0.0.1:5000')
+        socket.on('connect', () => socket.emit('emit', { data: 'Teste' }))
+        socket.on('message', (msg) => $('#list').append(`<li>${msg}</li>`))
+        $('#btnSend').click(() => {
+            // socket.send($('#message').val())
+            // $('#message').val('')
+        })
+        
+    })
+</script>
+</html>

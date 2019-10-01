@@ -1,13 +1,16 @@
 from aiohttp import web
 import socketio
 import asyncio
+import random
 
 sio = socketio.AsyncServer(cors_allowed_origins='*')
 app = web.Application()
 sio.attach(app)
 
+arr = {}
+
 async def index(request):
-    return web.Response(text="Hello World", content_type='text/html')
+    return web.json_response(arr)
 
 @sio.on('message')
 async def print_message(sid, message):
@@ -22,6 +25,9 @@ app.router.add_get('/', index)
 async def emitMessage():
     while True:
         await sio.emit('message', 'Luis')
+        number = random.randint(1, 500)
+        key = 'N' + str(number)
+        arr.update({key:number})
         await asyncio.sleep(5)
 
 @sio.event
