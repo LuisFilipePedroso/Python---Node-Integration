@@ -9,8 +9,6 @@
     <title>Python Node Integration</title>
 </head>
 <body>
-    <input type="text" name="message" id="message">
-    <button id="btnSend">Send</button>
     <ul id="list">
     </ul>
 </body>
@@ -18,12 +16,17 @@
     $(document).ready(function() {
         const socket = io('http://127.0.0.1:5000')
         socket.on('connect', () => socket.emit('emit', { data: 'Teste' }))
-        socket.on('message', (msg) => $('#list').append(`<li>${msg}</li>`))
-        $('#btnSend').click(() => {
-            // socket.send($('#message').val())
-            // $('#message').val('')
+        socket.on('message', (msg) => {
+            jQuery.ajax({
+                url: 'http://localhost:3333',
+                dataType: 'json',
+                success: (data) => {
+                    data = JSON.stringify(data)
+                    data = JSON.parse(data)
+                    $('#list').append(`<li>${data.message}</li>`)
+                }
+            })
         })
-        
     })
 </script>
 </html>
